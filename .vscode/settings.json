@@ -1,0 +1,8 @@
+{
+  "files.associations": {
+    "fcfs.h": "c",
+    "stdlib.h": "c",
+    "stdio.h": "c",
+    "process.h": "c"
+  }
+}
