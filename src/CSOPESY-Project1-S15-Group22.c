@@ -9,6 +9,8 @@ Section: S12
 #include "fcfs.h"
 #include "nsjf.h"
 #include "process.h"
+#include "psjf.h"
+#include "rr.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -59,10 +61,10 @@ int main()
       nsjf(process, xyz[1]);
       break;
     case 2:
-      printf("psjf");
+      psjf(process, xyz[1]);
       break;
     case 3:
-      printf("rr");
+      rr(process, xyz[1], xyz[2]);
       break;
     default:
       printf("Invalid scheduling algorithm.\n");

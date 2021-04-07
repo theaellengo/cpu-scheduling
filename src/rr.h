@@ -1,6 +1,7 @@
-#include <stdio.h>
 #include "process.h"
+#include <stdio.h>
 
-void nsjf(Process process[], int n) {
+void rr(Process process[], int n, int timeslice)
+{
   printf("RR");
 }
