@@ -1,20 +1,22 @@
 /***************************************************************
 Name: Go, Thea Ellen
+      Chong, Dianne
 Group: 22
 Section: S12
 ***************************************************************/
 
 // include libraries
-#include <stdio.h>
-#include <stdlib.h>
 #include "fcfs.h"
 #include "nsjf.h"
 #include "process.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 /** Function Declarations **/
 void getprocess(FILE* fp, Process* process);
 
-int main() {
+int main()
+{
   char filename[FILENAME_MAX];
   FILE* fp;
   int i;
@@ -50,20 +52,20 @@ int main() {
     printf("Timeslice value should be in range (1, 100).\n");
   else {
     switch (xyz[0]) {
-      case 0:
-        fcfs(process, xyz[1]);
-        break;
-      case 1:
-        nsjf(process, xyz[1]);
-        break;
-      case 2:
-        printf("psjf");
-        break;
-      case 3:
-        printf("rr");
-        break;
-      default:
-        printf("Invalid scheduling algorithm.\n");
+    case 0:
+      fcfs(process, xyz[1]);
+      break;
+    case 1:
+      nsjf(process, xyz[1]);
+      break;
+    case 2:
+      printf("psjf");
+      break;
+    case 3:
+      printf("rr");
+      break;
+    default:
+      printf("Invalid scheduling algorithm.\n");
     }
   }
 
@@ -71,6 +73,7 @@ int main() {
 }
 
 // scans processes from file
-void getprocess(FILE* fp, Process* process) {
+void getprocess(FILE* fp, Process* process)
+{
   fscanf(fp, "%d %d %d", &process->pid, &process->arrival, &process->burst);
 }
