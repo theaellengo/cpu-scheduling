@@ -1,6 +1,7 @@
-#include <stdio.h>
 #include "process.h"
+#include <stdio.h>
 
-void nsjf(Process process[], int n) {
+void psjf(Process process[], int n)
+{
   printf("PSJF");
 }
