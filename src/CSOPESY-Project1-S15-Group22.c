@@ -21,7 +21,6 @@ int main()
 {
   char filename[FILENAME_MAX];
   FILE* fp;
-  int i;
 
   printf("Enter Filename: ");
   gets(filename);
@@ -39,7 +38,7 @@ int main()
 
   // get y processes
   Process process[xyz[1]];
-  for (i = 0; i < xyz[1]; i++)
+  for (int i = 0; i < xyz[1]; i++)
     getprocess(fp, &process[i]);
 
   // close file
@@ -77,5 +76,9 @@ int main()
 // scans processes from file
 void getprocess(FILE* fp, Process* process)
 {
+  if (feof(fp)) {
+    printf("Number of listed processes is less than the specfied amount.\n");
+    exit(EXIT_FAILURE);
+  }
   fscanf(fp, "%d %d %d", &process->pid, &process->arrival, &process->burst);
 }
