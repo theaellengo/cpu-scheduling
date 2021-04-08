@@ -16,21 +16,28 @@ void fcfs(Process process[], int n)
   while (idx < n) {
     for (int i = 0; i < n; i++) {
       if (process[i].arrival == 0) {
+
+        // set tail to current process
         queue[idx] = process[i];
+
+        // add idle time to clock
         if (clock - arrival < 0) {
           clock -= clock - arrival;
-          printf("[///] "); // idle time
+          printf("[///] ");
         }
+
+        // update and set values
         setprocess(&queue[idx], &clock, arrival);
         printgnatt(queue[idx]);
+
         awt += queue[idx].waiting;
         idx++;
       }
       process[i].arrival--;
     }
-    arrival++; // arrival time of process == 0
+    arrival++; // arrival time of process
   }
 
-  awt /= n; // average waiting time = total waiting time / num processes
+  awt /= n; // total waiting time / num processes
   printprocess(queue, n, awt);
 }
