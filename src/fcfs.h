@@ -27,7 +27,7 @@ void fcfs(Process process[], int n)
         }
 
         // update and set values
-        setprocess(&queue[idx], &clock, arrival);
+        setprocess(&queue[idx], &clock, arrival, queue[idx].burst);
         printgnatt(queue[idx]);
 
         awt += queue[idx].waiting;
