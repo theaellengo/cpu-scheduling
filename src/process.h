@@ -16,29 +16,18 @@ typedef struct {
 } Process;
 
 /** Function Declarations **/
-void setprocess(Process* process, int* clock, int arrival);
-void setrr(Process* process, int* clock, int arrival, int timeslice);
+void setprocess(Process* process, int* clock, int arrival, int exectime);
 
-void setprocess(Process* process, int* clock, int arrival)
+void setprocess(Process* process, int* clock, int arrival, int exectime)
 {
   process->arrival = arrival;
   process->start = *clock;
-  process->completion = process->start + process->burst;
+  process->completion = process->start + exectime;
   // turnaround = completion time - arrival time
   process->turnaround = process->completion - arrival;
   // waiting = (tunraround - burst) || (start - arrival)
-  process->waiting = process->turnaround - process->burst;
-  *clock += process->burst;
-}
-
-void setrr(Process* process, int* clock, int arrival, int timeslice)
-{
-  process->arrival = arrival;
-  process->start = *clock;
-  process->completion = process->start + timeslice;
-  process->turnaround = process->completion - arrival;
-  process->waiting = process->turnaround - timeslice;
-  *clock += timeslice;
+  process->waiting = process->turnaround - exectime;
+  *clock += exectime;
 }
 
 #endif

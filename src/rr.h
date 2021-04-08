@@ -27,10 +27,14 @@ void rr(Process process[], int n, int timeslice)
       // if process has arrived and has not finsihed execution
       if (process[i].arrival == 0 && process[i].burst > 0) {
         queue[idx] = process[i];
-        if (clock - arrival < 0) clock -= clock - arrival; // idle
+
+        if (clock - arrival < 0) {
+          clock -= clock - arrival;
+          printf("[///] ");
+        }
 
         int burst = (queue[idx].burst > 4) ? timeslice : queue[idx].burst;
-        setrr(&queue[idx], &clock, arrival, burst);
+        setprocess(&queue[idx], &clock, arrival, burst);
         printgnatt(queue[idx]);
 
         process[i].burst -= burst;
