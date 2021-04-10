@@ -3,8 +3,6 @@
 #include <math.h>
 #include <stdio.h>
 
-void sortbyarrival(Process process[], int n);
-
 void rr(Process process[], int n, int timeslice)
 {
   // calculate size of queue (amount of context switches)
@@ -62,17 +60,4 @@ void rr(Process process[], int n, int timeslice)
   awt /= n;
   printgnatt(queue, qsize);
   printprocess(queue, qsize, awt);
-}
-
-// sorts processes by arrival time
-void sortbyarrival(Process process[], int n)
-{
-  Process temp;
-  for (int i = 0; i < n; i++)
-    for (int j = i + 1; j < n; j++)
-      if (process[i].arrtime > process[j].arrtime) {
-        temp = process[i];
-        process[i] = process[j];
-        process[j] = temp;
-      }
 }
