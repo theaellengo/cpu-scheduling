@@ -73,7 +73,7 @@ int main()
   return 0;
 }
 
-// scans processes from file
+// scans processes from file & initializes values
 void getprocess(FILE* fp, Process* process)
 {
   if (feof(fp)) {
@@ -81,4 +81,6 @@ void getprocess(FILE* fp, Process* process)
     exit(EXIT_FAILURE);
   }
   fscanf(fp, "%d %d %d", &process->pid, &process->arrival, &process->burst);
+  process->exectime = process->burst;
+  process->arrtime = process->arrival;
 }

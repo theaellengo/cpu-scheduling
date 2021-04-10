@@ -7,7 +7,7 @@
 #define DISPLAY
 
 void printprocess(Process process[], int n, float awt);
-void printgnatt(Process process);
+void printgnatt(Process process[], int n);
 void printlabel(char* str);
 int getnumdigits(int num);
 
@@ -29,19 +29,23 @@ void printprocess(Process process[], int n, float awt)
   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 }
 
-void printgnatt(Process process)
+void printgnatt(Process process[], int n)
 {
   HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-  SetConsoleTextAttribute(hConsole, 15 * 16);
-  printf(" %d", process.start);
-  printf("%*c ", process.burst / 2, ' ');
-  SetConsoleTextAttribute(hConsole, 15 * 16 + 4);
-  printf("P%d", process.pid);
-  SetConsoleTextAttribute(hConsole, 15 * 16);
-  printf("%*c ", process.burst / 2, ' ');
-  printf("%d ", process.completion);
-  SetConsoleTextAttribute(hConsole, 15);
-  printf(" ");
+  printlabel("\nGnatt Chart:\n");
+  for (int i = 0; i < n; i++) {
+    if (i > 0 && process[i - 1].completion != process[i].start) printf("[///] ");
+    SetConsoleTextAttribute(hConsole, 15 * 16);
+    printf(" %d", process[i].start);
+    printf("%*c ", (process[i].completion - process[i].start) / 2, ' ');
+    SetConsoleTextAttribute(hConsole, 15 * 16 + 4);
+    printf("P%d", process[i].pid);
+    SetConsoleTextAttribute(hConsole, 15 * 16);
+    printf(" %*c", (process[i].completion - process[i].start) / 2, ' ');
+    printf("%d ", process[i].completion);
+    SetConsoleTextAttribute(hConsole, 15);
+    printf(" ");
+  }
 }
 
 void printlabel(char* str)
