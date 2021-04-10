@@ -8,25 +8,28 @@
 typedef struct {
   int pid;
   int arrival;
-  int burst;
-  int start;
-  int completion;
+  int arrtime;
+  int burst; // total execution time
+  int exectime; // execution time left
+  int start; // start time
+  int completion; // end time
   int waiting;
   int turnaround;
 } Process;
 
 /** Function Declarations **/
-void setprocess(Process* process, int* clock, int arrival, int exectime);
+void setprocess(Process* process, int* clock, int exectime);
+void execute(Process* process, int* clock, int exectime);
 
-void setprocess(Process* process, int* clock, int arrival, int exectime)
+void setprocess(Process* process, int* clock, int exectime)
 {
-  process->arrival = arrival;
   process->start = *clock;
+  process->exectime -= exectime;
   process->completion = process->start + exectime;
   // turnaround = completion time - arrival time
-  process->turnaround = process->completion - arrival;
+  process->turnaround = process->completion - process->arrival;
   // waiting = (tunraround - burst) || (start - arrival)
-  process->waiting = process->turnaround - exectime;
+  process->waiting = process->turnaround - (process->burst - process->exectime);
   *clock += exectime;
 }
 
