@@ -46,4 +46,16 @@ void sortbyarrival(Process process[], int n)
       }
 }
 
+void sortbyburst(Process process[], int n)
+{
+  Process temp;
+  for (int i = 0; i < n; i++)
+    for (int j = i + 1; j < n; j++)
+      if (process[i].exectime > process[j].exectime) {
+        temp = process[i];
+        process[i] = process[j];
+        process[j] = temp;
+      }
+}
+
 #endif

@@ -7,6 +7,7 @@ Section: S12
 
 // include libraries
 #include "fcfs.h"
+#include "mlfq.h"
 #include "nsjf.h"
 #include "process.h"
 #include "psjf.h"
@@ -64,6 +65,9 @@ int main()
       break;
     case 3:
       rr(process, xyz[1], xyz[2]);
+      break;
+    case 4:
+      mlfq(process);
       break;
     default:
       printf("Invalid scheduling algorithm.\n");
