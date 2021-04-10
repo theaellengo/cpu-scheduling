@@ -19,7 +19,7 @@ typedef struct {
 
 /** Function Declarations **/
 void setprocess(Process* process, int* clock, int exectime);
-void execute(Process* process, int* clock, int exectime);
+void sortbyarrival(Process process[], int n);
 
 void setprocess(Process* process, int* clock, int exectime)
 {
@@ -31,6 +31,19 @@ void setprocess(Process* process, int* clock, int exectime)
   // waiting = (tunraround - burst) || (start - arrival)
   process->waiting = process->turnaround - (process->burst - process->exectime);
   *clock += exectime;
+}
+
+// sorts processes by arrival time
+void sortbyarrival(Process process[], int n)
+{
+  Process temp;
+  for (int i = 0; i < n; i++)
+    for (int j = i + 1; j < n; j++)
+      if (process[i].arrtime > process[j].arrtime) {
+        temp = process[i];
+        process[i] = process[j];
+        process[j] = temp;
+      }
 }
 
 #endif
