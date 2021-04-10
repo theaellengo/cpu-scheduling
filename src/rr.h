@@ -27,35 +27,44 @@ void rr(Process process[], int n, int timeslice)
       // if process has arrived and has not finsihed execution
       if (process[i].arrtime <= 0 && process[i].exectime > 0) {
         queue[idx] = process[i];
+
+        // if remaining burst time > timeslice, execute process for timeslice units
         int exectime = (queue[idx].exectime > timeslice) ? timeslice : queue[idx].exectime;
 
         setprocess(&queue[idx], &clock, exectime);
+
+        // add idle time to clock time and update process
         int idle = 0;
         while (queue[idx].waiting < 0) {
           idle++;
           clock++;
           setprocess(&queue[idx], &clock, 1);
-        } //idle time
+        }
+
+        // if process is done executing, add process waiting time to awt
+        if (queue[idx].exectime <= 0) awt += queue[idx].waiting;
 
         sum += exectime + idle;
         process[i].exectime -= exectime;
         process[i].arrtime = exectime + 1;
-        awt += queue[idx].waiting;
         idx++;
       }
       process[i].arrtime--;
     }
+
     // subtract execution time from all processes
     for (int j = 0; j < n; j++)
       process[j].arrtime -= sum;
+
     sortbyarrival(process, n);
   }
 
-  awt /= qsize;
+  awt /= n;
   printgnatt(queue, qsize);
   printprocess(queue, qsize, awt);
 }
 
+// sorts processes by arrival time
 void sortbyarrival(Process process[], int n)
 {
   Process temp;
