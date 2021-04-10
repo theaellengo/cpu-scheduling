@@ -12,20 +12,13 @@ void fcfs(Process process[], int n)
 
   // while all processes not in queue
   while (idx < n) {
-    int sum = 0;
     for (int i = 0; i < n; i++) {
       if (process[i].arrtime <= 0 && process[i].exectime > 0) {
-
-        // set head to current process
+        // set tail to current process
         queue[idx] = process[i];
 
         // add idle time to clock
-        int idle = 0;
-        while (queue[idx].waiting < 0) {
-          idle++;
-          clock++;
-          queue[idx].waiting++;
-        }
+        if (clock - count < 0) clock += count - clock;
 
         // update and set values
         setprocess(&queue[idx], &clock, queue[idx].burst);
@@ -35,11 +28,7 @@ void fcfs(Process process[], int n)
       }
       process[i].arrtime--;
     }
-    clock++;
-    // subtract execution time from all processes
-    for (int j = 0; j < n; j++) {
-      process[j].arrtime -= sum;
-    }
+    count++; // arrival time of process
   }
 
   awt /= n;

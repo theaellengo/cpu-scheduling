@@ -11,26 +11,6 @@ void printgnatt(Process process[], int n);
 void printlabel(char* str);
 int getnumdigits(int num);
 
-void ptemp(Process process[], int n, float awt)
-{
-  printlabel("\n\nProcess\tArrival\tBurst\tStart\tEnd\tArr\tExec\tWaiting\tTurnaround\n");
-  for (int i = 0; i < n; i++) {
-    printf("%d\t", process[i].pid);
-    printf("%d\t", process[i].arrival);
-    printf("%d\t", process[i].burst);
-    printf("%d\t", process[i].start);
-    printf("%d\t", process[i].completion);
-    printf("%d\t", process[i].arrtime);
-    printf("%d\t", process[i].exectime);
-    printf("%d\t", process[i].waiting);
-    printf("%d\n", process[i].turnaround);
-  }
-  printf("---------------------------------------------------------------");
-  SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 14);
-  printf("\nAverage Waiting Time: %.1f\n\n", awt);
-  SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-}
-
 void printprocess(Process process[], int n, float awt)
 {
   printlabel("\n\nProcess   Arrival   Burst   Start   End   Waiting   Turnaround\n");
