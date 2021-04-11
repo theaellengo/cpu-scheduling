@@ -38,12 +38,43 @@ void sortbyarrival(Process process[], int n)
 {
   Process temp;
   for (int i = 0; i < n; i++)
-    for (int j = i + 1; j < n; j++)
+    for (int j = i + 1; j < n; j++) {
       if (process[i].arrtime > process[j].arrtime) {
         temp = process[i];
         process[i] = process[j];
         process[j] = temp;
       }
+      // if arrival times are equal, sort by remaining burst time
+      if (process[i].arrtime == process[j].arrtime) {
+        if (process[i].exectime > process[j].exectime) {
+          temp = process[i];
+          process[i] = process[j];
+          process[j] = temp;
+        }
+      }
+    }
+}
+
+// sort processes by remaining burst time
+void sortbyburst(Process process[], int n)
+{
+  Process temp;
+  for (int i = 0; i < n; i++)
+    for (int j = i + 1; j < n; j++) {
+      if (process[i].exectime > process[j].exectime) {
+        temp = process[i];
+        process[i] = process[j];
+        process[j] = temp;
+      }
+      // if burst times are equal, sort by arrival time
+      if (process[i].exectime == process[j].exectime) {
+        if (process[i].arrtime > process[j].arrtime) {
+          temp = process[i];
+          process[i] = process[j];
+          process[j] = temp;
+        }
+      }
+    }
 }
 
 #endif

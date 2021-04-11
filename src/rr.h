@@ -20,41 +20,37 @@ void rr(Process process[], int n, int timeslice)
 
   // while all slices not in queue
   while (idx < qsize) {
-    int sum = 0;
+    int sum = 0; // total execution time
+    int flag = 0;
+    sortbyarrival(process, n);
+
     for (int i = 0; i < n; i++) {
       // if process has arrived and has not finsihed execution
       if (process[i].arrtime <= 0 && process[i].exectime > 0) {
+        flag = 1;
         queue[idx] = process[i];
 
         // if remaining burst time > timeslice, execute process for timeslice units
         int exectime = (queue[idx].exectime > timeslice) ? timeslice : queue[idx].exectime;
-
         setprocess(&queue[idx], &clock, exectime);
-
-        // add idle time to clock time and update process
-        int idle = 0;
-        while (queue[idx].waiting < 0) {
-          idle++;
-          clock++;
-          setprocess(&queue[idx], &clock, 1);
-        }
 
         // if process is done executing, add process waiting time to awt
         if (queue[idx].exectime <= 0) awt += queue[idx].waiting;
 
-        sum += exectime + idle;
+        sum += exectime;
         process[i].exectime -= exectime;
         process[i].arrtime = exectime + 1;
         idx++;
       }
-      process[i].arrtime--;
     }
-
+    if (flag == 0) {
+      clock++;
+      sum++;
+    }
     // subtract execution time from all processes
-    for (int j = 0; j < n; j++)
+    for (int j = 0; j < n; j++) {
       process[j].arrtime -= sum;
-
-    sortbyarrival(process, n);
+    }
   }
 
   awt /= n;

@@ -6,7 +6,7 @@ void fcfs(Process process[], int n)
 {
   Process queue[n];
   int clock = 0;
-  int count = 0;
+  int idle = 0;
   int idx = 0;
   float awt = 0;
 
@@ -18,22 +18,20 @@ void fcfs(Process process[], int n)
         queue[idx] = process[i];
 
         // add idle time to clock
-        if (clock - count < 0) clock += count - clock;
+        if (clock - idle < 0) clock += idle - clock;
 
         // update and set values
-        int exectime = queue[idx].burst;
-        setprocess(&queue[idx], &clock, exectime);
-
-        process[i].exectime -= exectime;
+        setprocess(&queue[idx], &clock, queue[idx].burst);
+        process[i].exectime -= queue[idx].burst;
         awt += queue[idx].waiting;
         idx++;
       }
       process[i].arrtime--;
     }
-    count++; // arrival time of process
+    idle++;
   }
 
-  awt /= n; // total waiting time / num processes
+  awt /= n;
   printgnatt(queue, n);
   printprocess(queue, n, awt);
 }
