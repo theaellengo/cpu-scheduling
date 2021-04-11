@@ -23,6 +23,7 @@ void rr(Process process[], int n, int timeslice)
     int sum = 0; // total execution time
     int flag = 0;
     sortbyarrival(process, n);
+
     for (int i = 0; i < n; i++) {
       // if process has arrived and has not finsihed execution
       if (process[i].arrtime <= 0 && process[i].exectime > 0) {

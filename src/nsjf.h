@@ -21,12 +21,10 @@ void nsjf(Process process[], int n)
         flag = 1;
         queue[idx] = process[i];
 
-        // if remaining burst time > timeslice, execute process for timeslice units
-        setprocess(&queue[idx], &clock, queue[idx].burst);
-
         // if process is done executing, add process waiting time to awt
         if (queue[idx].exectime <= 0) awt += queue[idx].waiting;
 
+        setprocess(&queue[idx], &clock, queue[idx].burst);
         sum += queue[idx].burst;
         process[i].exectime -= queue[idx].burst;
         process[i].arrtime = queue[idx].burst + 1;
