@@ -28,7 +28,7 @@ void fcfs(Process process[], int n)
       }
       process[i].arrtime--;
     }
-    count++; // arrival time of process
+    count++;
   }
 
   awt /= n;

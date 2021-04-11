@@ -22,7 +22,6 @@ void rr(Process process[], int n, int timeslice)
   while (idx < qsize) {
     int sum = 0; // total execution time
     int flag = 0;
-
     sortbyarrival(process, n);
     for (int i = 0; i < n; i++) {
       // if process has arrived and has not finsihed execution
@@ -39,7 +38,7 @@ void rr(Process process[], int n, int timeslice)
 
         sum += exectime;
         process[i].exectime -= exectime;
-        process[i].arrtime = exectime;
+        process[i].arrtime = exectime + 1;
         idx++;
       }
     }

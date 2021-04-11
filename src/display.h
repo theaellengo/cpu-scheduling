@@ -38,11 +38,11 @@ void printgnatt(Process process[], int n)
     if (i > 0 && process[i - 1].completion != process[i].start) printf("[///] ");
     SetConsoleTextAttribute(hConsole, 15 * 16);
     printf(" %d", process[i].start);
-    printf("%*c ", (process[i].completion - process[i].start) / 2, ' ');
+    printf("%*c", (process[i].completion - process[i].start) / 2, ' ');
     SetConsoleTextAttribute(hConsole, 15 * 16 + 4);
-    printf("P%d", process[i].pid);
+    printf(" P%d ", process[i].pid);
     SetConsoleTextAttribute(hConsole, 15 * 16);
-    printf(" %*c", (process[i].completion - process[i].start) / 2, ' ');
+    printf("%*c", (process[i].completion - process[i].start) / 2, ' ');
     printf("%d ", process[i].completion);
     SetConsoleTextAttribute(hConsole, 15);
     printf(" ");
