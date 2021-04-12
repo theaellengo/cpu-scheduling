@@ -14,8 +14,7 @@ void rr(Process process[], int n, int timeslice)
 
   // init values
   Process queue[qsize];
-  int clock = 0;
-  int idx = 0;
+  int clock = 0, idx = 0, last = INT_MAX;
   float awt = 0;
 
   // while all slices not in queue
@@ -29,6 +28,7 @@ void rr(Process process[], int n, int timeslice)
       if (process[i].arrtime <= 0 && process[i].exectime > 0) {
         flag = 1;
         queue[idx] = process[i];
+        if (last == process[i].pid) clock--;
 
         // if remaining burst time > timeslice, execute process for timeslice units
         int exectime = (queue[idx].exectime > timeslice) ? timeslice : queue[idx].exectime;
@@ -37,9 +37,11 @@ void rr(Process process[], int n, int timeslice)
         // if process is done executing, add process waiting time to awt
         if (queue[idx].exectime <= 0) awt += queue[idx].waiting;
 
+        // update values
         sum += exectime;
         process[i].exectime -= exectime;
         process[i].arrtime = exectime + 1;
+        last = process[i].pid;
         idx++;
       }
     }
