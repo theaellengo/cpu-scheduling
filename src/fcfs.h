@@ -5,16 +5,14 @@
 void fcfs(Process process[], int n)
 {
   Process queue[n];
-  int clock = 0;
-  int idle = 0;
-  int idx = 0;
+  int clock = 0, idle = 0, idx = 0;
   float awt = 0;
 
   // while all processes not in queue
   while (idx < n) {
     for (int i = 0; i < n; i++) {
       if (process[i].arrtime <= 0 && process[i].exectime > 0) {
-        // set tail to current process
+        // set to current process
         queue[idx] = process[i];
 
         // add idle time to clock
