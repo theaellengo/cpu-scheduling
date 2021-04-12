@@ -6,8 +6,7 @@ void nsjf(Process process[], int n)
 {
   // init values
   Process queue[n];
-  int clock = 0;
-  int idx = 0;
+  int clock = 0, idx = 0;
   float awt = 0;
 
   // while all slices not in queue

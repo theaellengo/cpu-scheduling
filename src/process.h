@@ -5,7 +5,7 @@
 #define PROCESS
 
 /** Struct of Process**/
-typedef struct {
+typedef struct process {
   int pid;
   int arrival;
   int arrtime;
