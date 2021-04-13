@@ -2,7 +2,7 @@
 #include <limits.h>
 #include <stdio.h>
 
-void execute(Process* queue, Process smallest, int* clock, int exectime, int* awt, int* idx);
+void execute(Process* queue, Process smallest, int* clock, int exectime, float* awt, int* idx);
 
 void psjf(Process process[], int n)
 {
@@ -64,11 +64,11 @@ void psjf(Process process[], int n)
   printprocess(queue, idx, awt);
 }
 
-void execute(Process* queue, Process smallest, int* clock, int exectime, int* awt, int* idx)
+void execute(Process* queue, Process smallest, int* clock, int exectime, float* awt, int* idx)
 {
   *queue = smallest;
   *clock -= exectime;
-  setprocess(&queue, &clock, exectime);
+  setprocess(queue, clock, exectime);
   if (queue->exectime == 0) awt += queue->waiting;
   *idx++;
 }
