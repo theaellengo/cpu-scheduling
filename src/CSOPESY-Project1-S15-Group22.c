@@ -89,24 +89,24 @@ void getprocess(FILE* fp, Process* process)
 
 int checkprocesses(Process process[], int n)
 {
-  for (int i = 0; i < n; i++)
-    for (int j = i + 1; j < n; j++) {
+  for (int i = 0; i < n; i++) {
+    for (int j = i + 1; j < n; j++)
       if (process[i].pid == process[j].pid) {
         printf("PIDs should not be the same.\n");
         return 1;
       }
-      if (process[i].pid < 0) {
-        printf("PIDs should not be negative.\n");
-        return 1;
-      }
-      if (process[i].arrival < 0) {
-        printf("Arrival should not be negative.\n");
-        return 1;
-      }
-      if (process[i].burst < 0) {
-        printf("Burst should not be negative.\n");
-        return 1;
-      }
+    if (process[i].pid < 0) {
+      printf("PIDs should not be negative.\n");
+      return 1;
     }
+    if (process[i].arrival < 0) {
+      printf("Arrival should not be negative.\n");
+      return 1;
+    }
+    if (process[i].burst < 0) {
+      printf("Burst should not be negative.\n");
+      return 1;
+    }
+  }
   return 0;
 }

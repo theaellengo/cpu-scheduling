@@ -6,24 +6,31 @@
 #ifndef DISPLAY
 #define DISPLAY
 
-void printprocess(Process process[], int n, float awt);
+void printprocess(Process process[], int n, Process queue[], int m, float awt);
 void printgnatt(Process process[], int n);
 void printlabel(char* str);
 int getnumdigits(int num);
 
-void printprocess(Process process[], int n, float awt)
+void printprocess(Process process[], int n, Process queue[], int m, float awt)
 {
-  printlabel("\n\nProcess   Arrival   Burst   Start   End   Waiting   Turnaround\n");
+  sortbypid(process, n);
+  printlabel("\n\nProcess    Start    End    Waiting    Turnaround\n");
   for (int i = 0; i < n; i++) {
-    printf("%d%*c", process[i].pid, 9 - getnumdigits(process[i].pid), ' ');
-    printf("%d%*c", process[i].arrival, 9 - getnumdigits(process[i].arrival), ' ');
-    printf("%d%*c", process[i].burst, 7 - getnumdigits(process[i].burst), ' ');
-    printf("%d%*c", process[i].start, 7 - getnumdigits(process[i].start), ' ');
-    printf("%d%*c", process[i].completion, 5 - getnumdigits(process[i].completion), ' ');
-    printf("%d%*c", process[i].waiting, 9 - getnumdigits(process[i].waiting), ' ');
-    printf("%d\n", process[i].turnaround);
+    int flag = 0;
+    printf("--------------------------------------------------\n");
+    printf("%d%*c", process[i].pid, 10 - getnumdigits(process[i].pid), ' ');
+    for (int j = 0; j < m; j++) {
+      if (process[i].pid == queue[j].pid) {
+        if (flag == 1) printf("%*c", 11 - getnumdigits(process[i].pid) + getnumdigits(process[i].pid), ' ');
+        printf("%d%*c", queue[j].start, 8 - getnumdigits(queue[j].start), ' ');
+        printf("%d%*c", queue[j].completion, 6 - getnumdigits(queue[j].completion), ' ');
+        printf("%d%*c", queue[j].waiting, 10 - getnumdigits(queue[j].waiting), ' ');
+        printf("%d\n", queue[j].turnaround);
+        flag = 1;
+      }
+    }
   }
-  printf("---------------------------------------------------------------");
+  printf("--------------------------------------------------");
   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 14);
   printf("\nAverage Waiting Time: %.1f\n\n", awt);
   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);

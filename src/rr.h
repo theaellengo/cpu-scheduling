@@ -30,7 +30,6 @@ void rr(Process process[], int n, int timeslice)
         queue[idx] = process[i];
 
         // if remaining burst time > timeslice, execute process for timeslice units
-        if (process[i].pid == last) clock--;
         int exectime = (queue[idx].exectime > timeslice) ? timeslice : queue[idx].exectime;
         setprocess(&queue[idx], &clock, exectime);
 
@@ -39,9 +38,10 @@ void rr(Process process[], int n, int timeslice)
 
         sum += exectime;
         process[i].exectime -= exectime;
-        process[i].arrtime = exectime + 1;
+        process[i].arrtime = exectime;
         last = process[i].pid;
         idx++;
+        break;
       }
     }
     if (flag == 0) {
@@ -49,12 +49,12 @@ void rr(Process process[], int n, int timeslice)
       sum++;
     }
     // subtract execution time from all processes
-    for (int j = 0; j < n; j++) {
-      process[j].arrtime -= sum;
+    for (int i = 0; i < n; i++) {
+      process[i].arrtime -= sum;
     }
   }
 
   awt /= n;
-  printgnatt(queue, qsize);
-  printprocess(queue, qsize, awt);
+  printgnatt(queue, idx);
+  printprocess(process, n, queue, idx, awt);
 }

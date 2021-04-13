@@ -60,7 +60,7 @@ void psjf(Process process[], int n)
 
   awt /= n;
   printgnatt(queue, idx);
-  printprocess(queue, idx, awt);
+  printprocess(process, n, queue, idx, awt);
 }
 
 Process execute(Process smallest, int clock, int exectime, float* awt)
