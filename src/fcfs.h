@@ -31,5 +31,5 @@ void fcfs(Process process[], int n)
 
   awt /= n;
   printgnatt(queue, n);
-  printprocess(queue, n, awt);
+  printprocess(process, n, queue, idx, awt);
 }
