@@ -2,8 +2,6 @@
 #include <limits.h>
 #include <stdio.h>
 
-void execute(Process* queue, Process smallest, int* clock, int exectime, float* awt, int* idx);
-
 void psjf(Process process[], int n)
 {
   // initialize values
@@ -11,7 +9,7 @@ void psjf(Process process[], int n)
   Process queue[process[n - 1].burst * n];
   Process smallest;
   smallest.pid = INT_MAX;
-  int rpro = n, clock = 0, idx = 0, exectime = 0, idle = 0;
+  int rpro = n, clock = 0, idx = 0, exectime = 0, idle = 1;
   float awt = 0;
 
   while (rpro != 0) {
@@ -27,14 +25,20 @@ void psjf(Process process[], int n)
         if (process[i].pid == smallest.pid) {
           exectime++;
         } else {
+          queue[idx] = smallest;
+
+          // if cpu was not idle
           if (exectime != 0 && idle != 1) {
-            execute(&queue[idx], smallest, &clock, exectime, &awt, &idx);
+            clock -= exectime; // start = clock - exectime
+            setprocess(&queue[idx], &clock, exectime);
+            if (queue[idx].exectime == 0) awt += queue[idx].waiting;
+            idx++;
           }
+
           idle = 0;
           exectime = 1;
           smallest = process[i];
         }
-
         process[i].exectime--;
         if (process[i].exectime == 0) rpro--;
         break;
@@ -44,12 +48,16 @@ void psjf(Process process[], int n)
     // if no process in queue
     if (flag == 0) {
       // if cpu was not idle
-      if (idle == 0 && rpro != n) {
-        execute(&queue[idx], smallest, &clock, exectime, &awt, &idx);
+      if (idle == 0) {
+        queue[idx] = smallest;
+        clock -= exectime;
+        setprocess(&queue[idx], &clock, exectime);
         exectime = 0;
+        idx++;
       } else {
         exectime++;
       }
+
       idle = 1;
     }
 
@@ -57,18 +65,13 @@ void psjf(Process process[], int n)
   }
 
   // execute last process
-  execute(&queue[idx], smallest, &clock, exectime, &awt, &idx);
+  queue[idx] = smallest;
+  clock -= exectime;
+  setprocess(&queue[idx], &clock, exectime);
+  awt += queue[idx].waiting;
+  idx++;
 
   awt /= n;
   printgnatt(queue, idx);
   printprocess(queue, idx, awt);
-}
-
-void execute(Process* queue, Process smallest, int* clock, int exectime, float* awt, int* idx)
-{
-  *queue = smallest;
-  *clock -= exectime;
-  setprocess(queue, clock, exectime);
-  if (queue->exectime == 0) awt += queue->waiting;
-  *idx++;
 }
