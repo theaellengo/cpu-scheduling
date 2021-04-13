@@ -6,11 +6,14 @@ void psjf(Process process[], int n)
 {
   // initialize values
   sortbyburst(process, n);
-
+  for (int i = 0; i < n; i++) {
+    printf("P%d\t%d\t%d\n", process[i].pid, process[i].burst, process[i].arrtime);
+  }
   Process queue[process[n - 1].burst * n];
-  Process smallest = process[0];
+  Process smallest;
   int rpro = n, clock = 0, idx = 0, exectime = 0, idle = 0;
   float awt = 0;
+  smallest.pid = INT_MAX;
 
   while (rpro != 0) {
     int flag = 0;
@@ -57,7 +60,6 @@ void psjf(Process process[], int n)
       exectime++;
       idle = 1;
     }
-
     clock++;
   }
 

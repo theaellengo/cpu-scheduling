@@ -14,16 +14,15 @@ void rr(Process process[], int n, int timeslice)
 
   // init values
   Process queue[qsize];
-  int clock = 0;
-  int idx = 0;
+  int clock = 0, idx = 0, last = INT_MAX;
   float awt = 0;
 
   // while all slices not in queue
   while (idx < qsize) {
     int sum = 0; // total execution time
     int flag = 0;
-    sortbyarrival(process, n);
 
+    sortbyarrival(process, n);
     for (int i = 0; i < n; i++) {
       // if process has arrived and has not finsihed execution
       if (process[i].arrtime <= 0 && process[i].exectime > 0) {
@@ -39,7 +38,8 @@ void rr(Process process[], int n, int timeslice)
 
         sum += exectime;
         process[i].exectime -= exectime;
-        process[i].arrtime = exectime + 1;
+        process[i].arrtime = (last == process[i].pid) ? exectime : exectime + 1;
+        last = process[i].pid;
         idx++;
       }
     }
