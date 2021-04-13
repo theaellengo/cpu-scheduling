@@ -2,13 +2,14 @@
 #include <limits.h>
 #include <stdio.h>
 
+Process execute(Process smallest, int clock, int exectime, float* awt);
+
 void psjf(Process process[], int n)
 {
   // initialize values
   sortbyburst(process, n);
   Process queue[process[n - 1].burst * n];
-  Process smallest;
-  smallest.pid = INT_MAX;
+  Process smallest = { INT_MAX };
   int rpro = n, clock = 0, idx = 0, exectime = 0, idle = 1;
   float awt = 0;
 
@@ -25,16 +26,10 @@ void psjf(Process process[], int n)
         if (process[i].pid == smallest.pid) {
           exectime++;
         } else {
-          queue[idx] = smallest;
-
           // if cpu was not idle
           if (exectime != 0 && idle != 1) {
-            clock -= exectime; // start = clock - exectime
-            setprocess(&queue[idx], &clock, exectime);
-            if (queue[idx].exectime == 0) awt += queue[idx].waiting;
-            idx++;
+            queue[idx++] = execute(smallest, clock, exectime, &awt);
           }
-
           idle = 0;
           exectime = 1;
           smallest = process[i];
@@ -49,15 +44,11 @@ void psjf(Process process[], int n)
     if (flag == 0) {
       // if cpu was not idle
       if (idle == 0) {
-        queue[idx] = smallest;
-        clock -= exectime;
-        setprocess(&queue[idx], &clock, exectime);
+        queue[idx++] = execute(smallest, clock, exectime, &awt);
         exectime = 0;
-        idx++;
       } else {
         exectime++;
       }
-
       idle = 1;
     }
 
@@ -65,13 +56,17 @@ void psjf(Process process[], int n)
   }
 
   // execute last process
-  queue[idx] = smallest;
-  clock -= exectime;
-  setprocess(&queue[idx], &clock, exectime);
-  awt += queue[idx].waiting;
-  idx++;
+  queue[idx++] = execute(smallest, clock, exectime, &awt);
 
   awt /= n;
   printgnatt(queue, idx);
   printprocess(queue, idx, awt);
+}
+
+Process execute(Process smallest, int clock, int exectime, float* awt)
+{
+  clock -= exectime;
+  setprocess(&smallest, &clock, exectime);
+  if (smallest.exectime == 0) *awt += smallest.waiting;
+  return smallest;
 }
