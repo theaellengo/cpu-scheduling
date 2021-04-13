@@ -11,8 +11,9 @@ void nsjf(Process process[], int n)
 
   // while all slices not in queue
   while (idx < n) {
-    int sum = 0; // total execution time
+    int sum = 0;
     int flag = 0;
+
     sortbyburst(process, n);
     for (int i = 0; i < n; i++) {
       // if process has arrived and has not finsihed execution
@@ -34,7 +35,6 @@ void nsjf(Process process[], int n)
       clock++;
       sum++;
     }
-    // subtract execution time from all processes
     for (int j = 0; j < n; j++) {
       process[j].arrtime -= sum;
     }
