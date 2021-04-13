@@ -7,7 +7,6 @@ Section: S12
 
 // include libraries
 #include "fcfs.h"
-#include "mlfq.h"
 #include "nsjf.h"
 #include "process.h"
 #include "psjf.h"
@@ -17,6 +16,7 @@ Section: S12
 
 /** Function Declarations **/
 void getprocess(FILE* fp, Process* process);
+int checkprocesses(Process process[], int n);
 
 int main()
 {
@@ -52,7 +52,8 @@ int main()
     printf("Timeslice value should be 1.\n");
   else if (xyz[2] < 1 || xyz[2] > 100)
     printf("Timeslice value should be in range (1, 100).\n");
-  else {
+  else if (checkprocesses(process, xyz[1])) {
+  } else {
     switch (xyz[0]) {
     case 0:
       fcfs(process, xyz[1]);
@@ -65,9 +66,6 @@ int main()
       break;
     case 3:
       rr(process, xyz[1], xyz[2]);
-      break;
-    case 4:
-      mlfq(process);
       break;
     default:
       printf("Invalid scheduling algorithm.\n");
@@ -87,4 +85,28 @@ void getprocess(FILE* fp, Process* process)
   fscanf(fp, "%d %d %d", &process->pid, &process->arrival, &process->burst);
   process->exectime = process->burst;
   process->arrtime = process->arrival;
+}
+
+int checkprocesses(Process process[], int n)
+{
+  for (int i = 0; i < n; i++)
+    for (int j = i + 1; j < n; j++) {
+      if (process[i].pid == process[j].pid) {
+        printf("PIDs should not be the same.\n");
+        return 1;
+      }
+      if (process[i].pid < 0) {
+        printf("PIDs should not be negative.\n");
+        return 1;
+      }
+      if (process[i].arrival < 0) {
+        printf("Arrival should not be negative.\n");
+        return 1;
+      }
+      if (process[i].burst < 0) {
+        printf("Burst should not be negative.\n");
+        return 1;
+      }
+    }
+  return 0;
 }

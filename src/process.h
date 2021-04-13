@@ -8,8 +8,8 @@
 typedef struct process {
   int pid;
   int arrival;
-  int arrtime;
-  int burst; // total execution time
+  int burst;
+  int arrtime; // arrival time left
   int exectime; // execution time left
   int start; // start time
   int completion; // end time

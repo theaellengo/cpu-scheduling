@@ -14,7 +14,7 @@ void rr(Process process[], int n, int timeslice)
 
   // init values
   Process queue[qsize];
-  int clock = 0, idx = 0, last = INT_MAX;
+  int clock = 0, idx = 0, last = -1;
   float awt = 0;
 
   // while all slices not in queue
@@ -30,6 +30,7 @@ void rr(Process process[], int n, int timeslice)
         queue[idx] = process[i];
 
         // if remaining burst time > timeslice, execute process for timeslice units
+        if (process[i].pid == last) clock--;
         int exectime = (queue[idx].exectime > timeslice) ? timeslice : queue[idx].exectime;
         setprocess(&queue[idx], &clock, exectime);
 
@@ -38,7 +39,7 @@ void rr(Process process[], int n, int timeslice)
 
         sum += exectime;
         process[i].exectime -= exectime;
-        process[i].arrtime = (last == process[i].pid) ? exectime : exectime + 1;
+        process[i].arrtime = exectime + 1;
         last = process[i].pid;
         idx++;
       }
