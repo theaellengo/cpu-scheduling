@@ -9,7 +9,7 @@ void psjf(Process process[], int n)
   // initialize values
   sortbyburst(process, n);
   Process queue[process[n - 1].burst * n];
-  Process smallest = { -1 };
+  Process smallest = { .pid = -1 };
   int rpro = n, clock = 0, idx = 0, exectime = 0, idle = 1;
   float awt = 0;
 

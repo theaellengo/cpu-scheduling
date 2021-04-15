@@ -1,3 +1,4 @@
+#include <limits.h>
 #include <math.h>
 #include <stdio.h>
 
@@ -20,6 +21,7 @@ typedef struct process {
 /** Function Declarations **/
 void setprocess(Process* process, int* clock, int exectime);
 void sortbyarrival(Process process[], int n);
+void sortbyburst(Process process[], int n);
 
 void setprocess(Process* process, int* clock, int exectime)
 {
@@ -43,14 +45,6 @@ void sortbyarrival(Process process[], int n)
         temp = process[i];
         process[i] = process[j];
         process[j] = temp;
-      }
-      // if arrival times are equal, sort by remaining burst time
-      if (process[i].arrtime == process[j].arrtime) {
-        if (process[i].exectime > process[j].exectime) {
-          temp = process[i];
-          process[i] = process[j];
-          process[j] = temp;
-        }
       }
     }
 }

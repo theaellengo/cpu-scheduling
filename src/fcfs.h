@@ -14,10 +14,8 @@ void fcfs(Process process[], int n)
       if (process[i].arrtime <= 0 && process[i].exectime > 0) {
         // set to current process
         queue[idx] = process[i];
-
         // add idle time to clock
         if (clock - idle < 0) clock += idle - clock;
-
         // update and set values
         setprocess(&queue[idx], &clock, queue[idx].burst);
         process[i].exectime -= queue[idx].burst;
