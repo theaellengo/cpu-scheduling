@@ -22,6 +22,9 @@ typedef struct process {
 void setprocess(Process* process, int* clock, int exectime);
 void sortbyarrival(Process process[], int n);
 void sortbyburst(Process process[], int n);
+void sortbypid(Process process[], int n);
+int getshortestarrival(Process process[], int n);
+int getshortestburst(Process process[], int n, int clock);
 
 void setprocess(Process* process, int* clock, int exectime)
 {
@@ -33,20 +36,6 @@ void setprocess(Process* process, int* clock, int exectime)
   // waiting = (tunraround - burst) || (start - arrival)
   process->waiting = process->turnaround - (process->burst - process->exectime);
   *clock += exectime;
-}
-
-// sorts processes by arrival time
-void sortbyarrival(Process process[], int n)
-{
-  Process temp;
-  for (int i = 0; i < n; i++)
-    for (int j = i + 1; j < n; j++) {
-      if (process[i].arrtime > process[j].arrtime) {
-        temp = process[i];
-        process[i] = process[j];
-        process[j] = temp;
-      }
-    }
 }
 
 // sort processes by remaining burst time
@@ -69,6 +58,44 @@ void sortbyburst(Process process[], int n)
         }
       }
     }
+}
+
+int getshortestburst(Process process[], int n, int clock)
+{
+  Process shortest = { .pid = -1, .exectime = INT_MAX };
+  int s = -1;
+  for (int i = 0; i < n; i++)
+    if (process[i].arrival <= clock && process[i].exectime > 0 && process[i].exectime < shortest.exectime) {
+      shortest = process[i];
+      s = i;
+    }
+  return s;
+}
+
+// sorts processes by arrival time
+void sortbyarrival(Process process[], int n)
+{
+  Process temp;
+  for (int i = 0; i < n; i++)
+    for (int j = i + 1; j < n; j++)
+      if (process[i].arrtime > process[j].arrtime) {
+        temp = process[i];
+        process[i] = process[j];
+        process[j] = temp;
+      }
+}
+
+int getshortestarrival(Process process[], int n)
+{
+  Process shortest = { .pid = -1, .arrtime = INT_MAX };
+  int s = -1;
+  for (int i = 0; i < n; i++)
+    if (process[i].arrtime <= 0 && process[i].exectime > 0
+        && process[i].arrtime < shortest.arrtime) {
+      shortest = process[i];
+      s = i;
+    }
+  return s;
 }
 
 void sortbypid(Process process[], int n)

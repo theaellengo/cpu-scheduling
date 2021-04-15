@@ -13,31 +13,28 @@ void psjf(Process process[], int n)
   int rpro = n, clock = 0, idx = 0, exectime = 0, idle = 1;
   float awt = 0;
 
+  sortbyarrival(process, n);
   while (rpro != 0) {
     int flag = 0;
     int sum = 0;
 
-    sortbyburst(process, n);
-    for (int i = 0; i < n; i++) {
-      if (process[i].arrival <= clock && process[i].exectime > 0) {
-        flag = 1;
-
-        // if current process has the smallest burst time
-        if (process[i].pid == smallest.pid) {
-          exectime++;
-        } else {
-          // if cpu was not idle
-          if (exectime != 0 && idle != 1) {
-            queue[idx++] = execute(smallest, clock, exectime, &awt);
-          }
-          idle = 0;
-          exectime = 1;
-          smallest = process[i];
+    int s = getshortestburst(process, n, clock);
+    if (process[s].arrival <= clock && process[s].exectime > 0 && s >= 0) {
+      flag = 1;
+      // if current process has the smallest burst time
+      if (process[s].pid == smallest.pid) {
+        exectime++;
+      } else {
+        // if cpu was not idle
+        if (exectime != 0 && idle != 1) {
+          queue[idx++] = execute(smallest, clock, exectime, &awt);
         }
-        process[i].exectime--;
-        if (process[i].exectime == 0) rpro--;
-        break;
+        idle = 0;
+        exectime = 1;
+        smallest = process[s];
       }
+      process[s].exectime--;
+      if (process[s].exectime == 0) rpro--;
     }
 
     // if no process in queue

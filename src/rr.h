@@ -22,34 +22,30 @@ void rr(Process process[], int n, int timeslice)
     int sum = 0; // total execution time
     int flag = 0;
 
-    sortbyarrival(process, n);
-    for (int i = 0; i < n; i++) {
-      // if process has arrived and has not finsihed execution
-      if (process[i].arrtime <= 0 && process[i].exectime > 0) {
-        flag = 1;
-        queue[idx] = process[i];
+    int s = getshortestarrival(process, n);
+    if (process[s].arrtime <= 0 && process[s].exectime > 0 && s >= 0) {
+      flag = 1;
+      queue[idx] = process[s];
 
-        // if remaining burst time > timeslice, execute process for timeslice units
-        int exectime = (queue[idx].exectime > timeslice) ? timeslice : queue[idx].exectime;
-        setprocess(&queue[idx], &clock, exectime);
+      // if remaining burst time > timeslice, execute process for timeslice units
+      int exectime = (queue[idx].exectime > timeslice) ? timeslice : queue[idx].exectime;
+      setprocess(&queue[idx], &clock, exectime);
 
-        // if process is done executing, add process waiting time to awt
-        if (queue[idx].exectime <= 0) awt += queue[idx].waiting;
+      // if process is done executing, add process waiting time to awt
+      if (queue[idx].exectime <= 0) awt += queue[idx].waiting;
 
-        sum += exectime;
-        process[i].exectime -= exectime;
-        process[i].arrtime = exectime;
-        last = process[i].pid;
-        
-        // add to end of queue
-        Process temp = process[i];
-        for (int j = i; j < n - 1; j++)
-          process[j] = process[j + 1];
-        process[n - 1] = temp;
-        
-        idx++;
-        break;
-      }
+      sum += exectime;
+      process[s].exectime -= exectime;
+      process[s].arrtime = exectime;
+      last = process[s].pid;
+
+      // add to end of queue
+      Process temp = process[s];
+      for (int j = s; j < n - 1; j++)
+        process[j] = process[j + 1];
+      process[n - 1] = temp;
+
+      idx++;
     }
     if (flag == 0) {
       clock++;
