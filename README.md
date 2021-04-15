@@ -29,5 +29,3 @@ This Machine Project was implemented as one of the requirements for the course C
 
 - The output prints Y lines of processes that show the processes, all start and end times, waiting time, and turnaround time.
 - The last line of the output displays the average waiting time.
-
-![Sample](sample.PNG)
