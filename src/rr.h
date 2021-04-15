@@ -40,6 +40,13 @@ void rr(Process process[], int n, int timeslice)
         process[i].exectime -= exectime;
         process[i].arrtime = exectime;
         last = process[i].pid;
+        
+        // add to end of queue
+        Process temp = process[i];
+        for (int j = i; j < n - 1; j++)
+          process[j] = process[j + 1];
+        process[n - 1] = temp;
+        
         idx++;
         break;
       }
