@@ -39,9 +39,13 @@ int main()
 
   // get y processes
   Process process[xyz[1]];
-  for (int i = 0; i < xyz[1]; i++)
+  for (int i = 0; i < xyz[1]; i++) {
     getprocess(fp, &process[i]);
-
+    if (i < xyz[1] - 1 && getc(fp) != '\n') {
+      printf("Number of listed processes is less than the specfied amount.\n");
+      exit(EXIT_FAILURE);
+    }
+  }
   // close file
   fclose(fp);
 
@@ -78,13 +82,15 @@ int main()
 // scans processes from file & initializes values
 void getprocess(FILE* fp, Process* process)
 {
-  if (feof(fp)) {
+  if (fscanf(fp, "%d", &process->pid) == EOF
+      || fscanf(fp, "%d", &process->arrival) == EOF
+      || fscanf(fp, "%d", &process->burst) == EOF) {
     printf("Number of listed processes is less than the specfied amount.\n");
     exit(EXIT_FAILURE);
+  } else {
+    process->exectime = process->burst;
+    process->arrtime = process->arrival;
   }
-  fscanf(fp, "%d %d %d", &process->pid, &process->arrival, &process->burst);
-  process->exectime = process->burst;
-  process->arrtime = process->arrival;
 }
 
 int checkprocesses(Process process[], int n)
@@ -95,16 +101,10 @@ int checkprocesses(Process process[], int n)
         printf("PIDs should not be the same.\n");
         return 1;
       }
-    if (process[i].pid < 0) {
-      printf("PIDs should not be negative.\n");
-      return 1;
-    }
-    if (process[i].arrival < 0) {
-      printf("Arrival should not be negative.\n");
-      return 1;
-    }
-    if (process[i].burst < 0) {
-      printf("Burst should not be negative.\n");
+    if (process[i].pid < 0
+        || process[i].arrival < 0
+        || process[i].burst < 0) {
+      printf("Process values should not be negative.\n");
       return 1;
     }
   }
