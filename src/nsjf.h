@@ -14,22 +14,19 @@ void nsjf(Process process[], int n)
     int sum = 0;
     int flag = 0;
 
-    sortbyburst(process, n);
-    for (int i = 0; i < n; i++) {
-      // if process has arrived and has not finsihed execution
-      if (process[i].arrtime <= 0 && process[i].exectime > 0) {
-        flag = 1;
-        queue[idx] = process[i];
+    int s = getshortestburst(process, n, clock);
+    // if process has arrived and has not finsihed execution
+    if (process[s].arrival <= clock && process[s].exectime > 0 && s >= 0) {
+      flag = 1;
+      queue[idx] = process[s];
 
-        setprocess(&queue[idx], &clock, queue[idx].burst);
+      setprocess(&queue[idx], &clock, queue[idx].burst);
 
-        // if process is done executing, add process waiting time to awt
-        awt += queue[idx].waiting;
-        sum += queue[idx].burst;
-        process[i].exectime -= queue[idx].burst;
-        idx++;
-        break;
-      }
+      // if process is done executing, add process waiting time to awt
+      awt += queue[idx].waiting;
+      sum += queue[idx].burst;
+      process[s].exectime -= queue[idx].burst;
+      idx++;
     }
     if (flag == 0) {
       clock++;

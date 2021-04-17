@@ -41,11 +41,8 @@ int main()
   Process process[xyz[1]];
   for (int i = 0; i < xyz[1]; i++) {
     getprocess(fp, &process[i]);
-    if (i < xyz[1] - 1 && getc(fp) != '\n') {
-      printf("Number of listed processes is less than the specfied amount.\n");
-      exit(EXIT_FAILURE);
-    }
   }
+
   // close file
   fclose(fp);
 
